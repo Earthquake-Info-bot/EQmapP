@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>地震マップvP2.2.15</title>
+<title>地震マップvP2.3.2</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <style>
 html, body {
@@ -109,7 +109,23 @@ html, body {
   <div class="scale">--</div>
 </div>
 <div id="minimap" style="width:150px;height:200px;position:absolute;bottom:20px;right:20px;z-index:99999;border:3px solid black;background:white;display:none;"></div>
-
+<!--
+<div style="
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  padding: 6px 10px;
+  font-family: 'Yu Gothic','YuGothic','メイリオ',sans-serif;
+  font-weight: bold;
+  line-height: 1.1;
+  z-index: 100000;
+">
+  訓練
+</div>
+  -->
+  
 <!-- ヘルプボタン -->
 <div id="help-button">？</div>
 
@@ -206,7 +222,6 @@ GitHub Pages
 <script>
 let coordMap, areaMap;
 let hypocenterMarker = null;
-let API_URL = null;
 
 async function initData(){
   coordMap = await loadCoordMap();
@@ -217,7 +232,12 @@ async function initData(){
 // ==================== 地震マップβ版 最終完全版 ====================
 
 // メイン地図の初期化
-const map = L.map('map').setView([37.5, 138], 5);
+const map = L.map('map', {
+  zoomSnap: 0,
+  zoomDelta: 0.25,
+  preferCanvas: true
+}).setView([37.5, 138], 5);
+  
 function resizeMap() {
   map.invalidateSize();
 }
@@ -350,7 +370,9 @@ function clearMap() {
 // ==================== 地震情報取得（そのまま）===================
 async function fetchEarthquake() {
 try {
-    const res = await fetch(API_URL);
+    const url = prompt("取得するAPIのURLを入力してください","https://api.p2pquake.net/v2/history?codes=551&limit=5&offset=");
+    const res = await fetch(url);
+    //const res = await fetch("https://api-v2-sandbox.p2pquake.net/v2/history?codes=551&limit=5");
 
   if (!res.ok) throw new Error("地震データが取得できません");
     const data = await res.json();
@@ -456,7 +478,8 @@ for (const p of points) {
 
   try {
     console.log("GeoJSON fetch開始:", areaCode);
-    const res = await fetch(`https://earthquake-info-bot.github.io/EQmap/geojson/${areaCode}.json`);
+    const res = await fetch(`https://geoshape.ex.nii.ac.jp/jma/resource/AreaForecastLocalE/20240520/${areaCode}.geojson`);
+    //const res = await fetch(`https://earthquake-info-bot.github.io/EQmap/geojson/${areaCode}.json`);
     if (!res.ok) throw new Error(`${p.addr} のGeoJSON取得失敗`);
     const geojson = await res.json();
     console.log("GeoJSON取得成功:", areaCode, "features数:", geojson.features?.length);
@@ -618,7 +641,7 @@ if (geoBounds.isValid()) {
       ${nameText}<br>
       M${magnitudeText}　深さ ${depthText}<br>
       ${tsunami}<br>
-      <span style="font-size:0.8em;font-weight:normal;">NAFY 地震マップvP2.2.15</span>
+      <span style="font-size:0.8em;font-weight:normal;">NAFY 地震マップv2.3.2</span>
       `;
       
           // ===== 最大震度 =====
@@ -751,18 +774,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 (async () => {
   await initData();
-
-  const url = prompt("取得するAPIのURLを入力してください","https://api.p2pquake.net/v2/history?codes=551&limit=5&offset=");
-  if (!url) {
-    alert("URLが入力されていません");
-    return;
-  }
-
-  API_URL = url;
-
   fetchEarthquake();
+  setInterval(fetchEarthquake, 5000);
 })();
-  
 window.addEventListener('resize', updateMaxIntensityPosition);
 </script>
 

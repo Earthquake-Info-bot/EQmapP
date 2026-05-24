@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>地震マップvP2.3.2</title>
+<title>地震マップvP2.3.3</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <style>
 html, body {
@@ -775,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
 (async () => {
   await initData();
   fetchEarthquake();
-  setInterval(fetchEarthquake, 5000);
+  //setInterval(fetchEarthquake, 5000);
 })();
 window.addEventListener('resize', updateMaxIntensityPosition);
 </script>

@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>地震マップvP2.3.3</title>
+<title>地震マップvP2.4.1</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <style>
 html, body {
@@ -370,7 +370,17 @@ function clearMap() {
 // ==================== 地震情報取得（そのまま）===================
 async function fetchEarthquake() {
 try {
-    const url = prompt("取得するAPIのURLを入力してください","https://api.p2pquake.net/v2/history?codes=551&limit=5&offset=");
+    const params = new URLSearchParams(location.search);
+    const queryUrl = params.get("url");
+    
+    const url = queryUrl || prompt(
+      "取得するAPIのURLを入力してください",
+      "https://api.p2pquake.net/v2/history?codes=551&limit=5&offset="
+    );
+    
+    // キャンセル時
+    if (!url) return;
+  
     const res = await fetch(url);
     //const res = await fetch("https://api-v2-sandbox.p2pquake.net/v2/history?codes=551&limit=5");
 

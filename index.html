@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>地震マップvP2.4.3</title>
+<title>地震マップvP3.2.1</title>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <style>
 html, body {
@@ -10,6 +11,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: "BIZ UDPGothic", sans-serif;
 }
   
 #map {
@@ -19,85 +21,100 @@ html, body {
   width: 100vw;
   height: 100vh;
 }
-  .intensity-marker {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:50%;
-    width:32px;
-    height:32px;
-    font-weight:bold;
-    font-size:14px;
-    border:2px solid rgba(0,0,0,0.2);
-    box-sizing:border-box;
-    pointer-events:none;
-  }
-  #loading {
-    position:absolute;
-    top:30px;
-    left:50%;
-    transform:translateX(-50%);
-    background:white;
-    padding:5px 10px;
-    border:1px solid black;
-    z-index:100000;
-    font-weight:bold;
-    font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
-  }
-  #hypo-info {
-    position:absolute;
-    top:10px;
-    left:10px;
-    background:rgba(255,255,255,0.9);
-    padding:8px 12px;
-    border:1px solid black;
-    font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
-    z-index:100000;
-    font-weight:bold;
-    cursor:move;
-    line-height:1.1;
-  }
-  #max-intensity {
-    min-width:80px;
-    border:1px solid black;
-    text-align:center;
-    font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
-    position:absolute;
-    left:10px;
-    z-index:100000;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:3px 10px;
-    box-sizing:border-box;
-    border-radius:0;
-  }
-  #max-intensity .label {
-    font-size:0.85em;
-    font-weight:normal;
-    margin-bottom:1px;
-    width:100%;
-    box-sizing:border-box;
-  }
-  #max-intensity .scale {
-    font-size:2.2em;
-    font-weight:bold;
-    line-height:1;
-    margin:0;
-    padding:0;
-    height:auto;
-    width:auto;
-    box-sizing:border-box;
-  }
-  #help-checkbox-container {
-    margin-top: 10px;
-    font-size: 0.9em;
-    text-align: left;
-  }
-  #help-checkbox-container input[type="checkbox"] {
-    margin-right: 5px;
-  }
+
+.intensity-marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-family: "BIZ UDPGothic", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+#loading {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 5px 10px;
+  border: 1px solid black;
+  z-index: 100000;
+  font-family: "BIZ UDPGothic", sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#hypo-info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255,255,255,0.9);
+  padding: 8px 12px;
+  border: 1px solid black;
+  font-family: "BIZ UDPGothic", sans-serif;
+  z-index: 100000;
+  font-weight: 700;
+  line-height: 1.1;
+  cursor: move;
+}
+
+#max-intensity {
+  min-width: 80px;
+  border: 1px solid black;
+  text-align: center;
+  font-family: "BIZ UDPGothic", sans-serif;
+  position: absolute;
+  left: 10px;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+#max-intensity .label {
+  font-size: 0.85em;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#max-intensity .scale {
+  font-size: 2.2em;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  box-sizing: border-box;
+}
+
+#help-checkbox-container {
+  margin-top: 10px;
+  font-family: "BIZ UDPGothic", sans-serif;
+  font-size: 0.9em;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: left;
+}
+
+#help-checkbox-container input[type="checkbox"] {
+  margin-right: 5px;
+}
 </style>
 </head>
 <body>
@@ -368,6 +385,7 @@ function clearMap() {
 }
   
 // ==================== 地震情報取得（そのまま）===================
+// ==================== 地震情報取得（そのまま）===================
 async function fetchEarthquake() {
 try {
     const params = new URLSearchParams(location.search);
@@ -556,8 +574,6 @@ if (geoBounds.isValid()) {
     
 }
       
-
-
           const eq = eqData.earthquake;
           const hypo = eq.hypocenter;
       
@@ -651,7 +667,7 @@ if (geoBounds.isValid()) {
       ${nameText}<br>
       M${magnitudeText}　深さ ${depthText}<br>
       ${tsunami}<br>
-      <span style="font-size:0.8em;font-weight:normal;">NAFY 地震マップvP2.4.2</span>
+      <span style="font-size:0.8em;font-weight:normal;">NAFY 地震マップvP3.2.1</span>
       `;
       
           // ===== 最大震度 =====
@@ -798,33 +814,77 @@ window.addEventListener('resize', updateMaxIntensityPosition);
 // ===============================
 
 const hypoInfo = document.getElementById("hypo-info");
+const loading = document.getElementById("loading");
 
-hypoInfo.addEventListener("click", function(e){
+hypoInfo.addEventListener("click", async function(e){
   e.preventDefault();
   e.stopPropagation();
 
-  // まずクリック直後に空タブを開く（iOSでも安全）
-  const newTab = window.open("", "_blank");
+  try {
+    await document.fonts.ready;
 
-  // フォントの読み込み完了を待ってから canvas 化
-  document.fonts.ready.then(() => {
-    setTimeout(() => { // 500ms 待つ
-      html2canvas(document.body, { useCORS: true, allowTaint: true, scale: 2 })
-        .then(canvas => {
-          canvas.toBlob(blob => {
-            const url = URL.createObjectURL(blob);
-            newTab.location.href = url;
-          }, "image/png");
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const canvas = await html2canvas(document.body, {
+      useCORS: true,
+      allowTaint: true,
+      scale: 2
+    });
+
+    const blob = await new Promise(resolve => {
+      canvas.toBlob(resolve, "image/png");
+    });
+
+    if (!blob) {
+      throw new Error("PNG生成失敗");
+    }
+
+    // ① 画像コピー
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          "image/png": blob
         })
-        .catch(err => {
-          console.error(err);
-          alert("スクリーンショット処理に失敗しました。");
-          if (newTab) newTab.close();
-        });
-    }, 500);
-  });
+      ]);
+
+      loading.textContent = "画像をコピーしました";
+      loading.style.display = "block";
+
+      setTimeout(() => {
+        loading.style.display = "none";
+      }, 2000);
+
+      return;
+
+    } catch(copyErr) {
+      console.error("コピー失敗:", copyErr);
+    }
+
+
+    // ② 新しいタブ表示
+    try {
+      const newTab = window.open("", "_blank");
+
+      if (!newTab) {
+        throw new Error("タブを開けませんでした");
+      }
+
+      newTab.location.href = URL.createObjectURL(blob);
+      return;
+
+    } catch(tabErr) {
+      console.error("タブ表示失敗:", tabErr);
+    }
+
+
+    // ③ 最終的に失敗
+    alert("スクリーンショット処理に失敗しました。");
+
+  } catch(err) {
+    console.error(err);
+    alert("スクリーンショット処理に失敗しました。");
+  }
 });
 </script>    
-    
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>地震マップvP3.2.1</title>
+<title>地震マップvP3.3.1</title>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <style>
@@ -513,6 +513,7 @@ for (const p of points) {
     console.log("GeoJSON取得成功:", areaCode, "features数:", geojson.features?.length);
 
     const layer = L.geoJSON(geojson, {
+      smoothFactor: 0,
       pane: 'geojsonPane',
       style: {
         color: fillColor,
